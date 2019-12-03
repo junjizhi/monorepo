@@ -76,7 +76,7 @@ jobs:
       - run: yarn lint:check
       - run: yarn build:ci
 
-  test:
+  test-channel-provider:
     <<: *defaults
     steps:
       - checkout
@@ -84,7 +84,79 @@ jobs:
           file: test-stats
       - attach_workspace:
           at: /home/circleci/project
-      - run: yarn test:ci
+      - run: cd packages/channel-provider && yarn test:ci
+      - upload_logs:
+          file: test-stats
+
+  test-embedded-wallet:
+    <<: *defaults
+    steps:
+      - checkout
+      - log_stats:
+          file: test-stats
+      - attach_workspace:
+          at: /home/circleci/project
+      - run: cd packages/embedded-wallet && yarn test:ci
+      - upload_logs:
+          file: test-stats
+
+  test-hub:
+    <<: *defaults
+    steps:
+      - checkout
+      - log_stats:
+          file: test-stats
+      - attach_workspace:
+          at: /home/circleci/project
+      - run: cd packages/hub && yarn test:ci
+      - upload_logs:
+          file: test-stats
+
+  test-nitro-protocol:
+    <<: *defaults
+    steps:
+      - checkout
+      - log_stats:
+          file: test-stats
+      - attach_workspace:
+          at: /home/circleci/project
+      - run: cd packages/nitro-protocol && yarn test:ci
+      - upload_logs:
+          file: test-stats
+
+  test-rps:
+    <<: *defaults
+    steps:
+      - checkout
+      - log_stats:
+          file: test-stats
+      - attach_workspace:
+          at: /home/circleci/project
+      - run: cd packages/rps && yarn test:ci
+      - upload_logs:
+          file: test-stats
+
+  test-wallet:
+    <<: *defaults
+    steps:
+      - checkout
+      - log_stats:
+          file: test-stats
+      - attach_workspace:
+          at: /home/circleci/project
+      - run: cd packages/wallet && yarn test:ci
+      - upload_logs:
+          file: test-stats
+
+  test-web3torrent:
+    <<: *defaults
+    steps:
+      - checkout
+      - log_stats:
+          file: test-stats
+      - attach_workspace:
+          at: /home/circleci/project
+      - run: cd packages/web3torrent && yarn test:ci
       - upload_logs:
           file: test-stats
 
