@@ -186,7 +186,31 @@ workflows:
           requires:
             - prepare
 
-      - test:
+      - test-channel-provider:
+          requires:
+            - prepare
+
+      - test-embedded-wallet:
+          requires:
+            - prepare
+
+      - test-hub:
+          requires:
+            - prepare
+
+      - test-nitro-protocol:
+          requires:
+            - prepare
+
+      - test-rps:
+          requires:
+            - prepare
+
+      - test-wallet:
+          requires:
+            - prepare
+
+      - test-web3torrent:
           requires:
             - prepare
 
