@@ -16,7 +16,7 @@
     "server:watch": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node ./src/hub/server.ts",
     "firebase-relay:start:sdev": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node src/message/firebase-relay",
     "chain:test": "npx jest --runInBand -c ./config/jest/jest.chain.config.js",
-    "server:test": "npx jest --runInBand -c ./config/jest/jest.config.js",
+    "server:test": "npx jest -c ./config/jest/jest.config.js",
     "test:ci": "run-s chain:test server:test",
     "build": "npx tsc",
     "prepare": "yarn build",
