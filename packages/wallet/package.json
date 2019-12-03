@@ -24,7 +24,7 @@
     "start": "node scripts/start.js",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "test:app": "npx jest -c ./config/jest/jest.config.js",
-    "test:ci:app": "yarn test:app --all --ci",
+    "test:ci:app": "yarn test:app --all --ci --bail",
     "test:ci:contracts": "yarn test:contracts --all --ci --detectOpenHandles --bail",
     "test:ci": "yarn test:ci:contracts && yarn test:ci:app",
     "test:contracts": "npx jest --runInBand -c ./config/jest/jest.contracts.config.js --detectOpenHandles --bail",
