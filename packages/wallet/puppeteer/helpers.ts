@@ -1,8 +1,8 @@
 import puppeteer from "puppeteer";
 
+import Emittery from "emittery";
 import fs from "fs";
 import path from "path";
-import Emittery from "emittery";
 
 export const enum MessageType {
   PlayerAMessage = "playerA-message",
@@ -56,7 +56,12 @@ export async function loadWallet(page: puppeteer.Page, messageListener: (message
   });
   page.on("console", msg => {
     if (msg.type() === "error") {
+      console.error(msg.text());
       throw new Error(`Error was logged into the console ${msg.text()}`);
+    } else if (msg.type() === "warning") {
+      console.warn(msg.text());
+    } else {
+      console.log(msg.text());
     }
   });
 
@@ -76,7 +81,7 @@ export async function loadWallet(page: puppeteer.Page, messageListener: (message
 export async function setUpBrowser(headless: boolean): Promise<puppeteer.Browser> {
   const browser = await puppeteer.launch({
     headless,
-    devtools: headless,
+    devtools: !headless,
     // Needed to allow both windows to execute JS at the same time
     ignoreDefaultArgs: [
       "--disable-background-timer-throttling",
