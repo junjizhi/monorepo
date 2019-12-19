@@ -22,7 +22,8 @@
     "lint:check": "lerna run lint:check --parallel --no-bail",
     "lint:write": "lerna run lint:write --parallel --no-bail",
     "publish": "lerna publish --yes from-package patch",
-    "postinstall": "patch-package && typesync"
+    "postinstall": "patch-package && typesync",
+    "heroku-postbuild": "./heroku-build.sh"
   },
   "keywords": [
     "ethereum",
