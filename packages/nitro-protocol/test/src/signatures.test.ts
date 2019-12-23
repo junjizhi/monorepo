@@ -93,7 +93,7 @@ describe('signatures', () => {
       const hashedState = hashState(state);
       const signature = splitSignature(await wallet.signMessage(arrayify(hashedState)));
       expect(() => {
-        signChallengeMessage([{state, signature}], wallet.privateKey);
+        signChallengeMessage([{state, signatures: [signature]}], wallet.privateKey);
       }).toThrow();
     });
   });
@@ -112,7 +112,7 @@ describe('signatures', () => {
       const hashedState = hashState(state);
       const signature = splitSignature(await wallet.signMessage(arrayify(hashedState)));
 
-      expect(getStateSignerAddress({state, signature})).toEqual(wallet.address);
+      expect(getStateSignerAddress({state, signatures: [signature]})).toEqual(wallet.address);
     });
 
     it('throws an exception when the signer is not a participant', async () => {
@@ -133,7 +133,7 @@ describe('signatures', () => {
       const hashedState = hashState(state);
       const signature = splitSignature(await wallet.signMessage(arrayify(hashedState)));
 
-      expect(() => getStateSignerAddress({state, signature})).toThrow();
+      expect(() => getStateSignerAddress({state, signatures: [signature]})).toThrow();
     });
   });
 });

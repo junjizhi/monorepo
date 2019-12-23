@@ -52,7 +52,7 @@ export function createForceMoveTransaction(
   const isFinalCount = states.filter(s => s.isFinal === true).length;
   // TODO: Is there a reason why createForceMoveTransaction accepts a State[] and a Signature[]
   // Argument rather than a SignedState[] argument?
-  const signedStates = states.map(s => ({state: s, signature: {v: 0, r: '', s: ''}}));
+  const signedStates = states.map(s => ({state: s, signatures: [{v: 0, r: '', s: ''}]}));
   const challengerSignature = signChallengeMessage(signedStates, challengerPrivateKey);
 
   const data = ForceMoveContractInterface.functions.forceMove.encode([

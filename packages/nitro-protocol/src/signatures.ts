@@ -5,8 +5,14 @@ import {hashState, State} from './contract/state';
 import {SignedState} from '.';
 
 export function getStateSignerAddress(signedState: SignedState): string {
+  if (signedState.signatures.length !== 1) {
+    throw new Error('Can only get signer address when there is 1 signature.');
+  }
   const stateHash = hashState(signedState.state);
-  const recoveredAddress = utils.verifyMessage(utils.arrayify(stateHash), signedState.signature);
+  const recoveredAddress = utils.verifyMessage(
+    utils.arrayify(stateHash),
+    signedState.signatures[0]
+  );
   const {channel} = signedState.state;
   const {participants} = channel;
 
@@ -29,7 +35,7 @@ export function signState(state: State, privateKey: string): SignedState {
   const hashedState = hashState(state);
 
   const signature = signData(hashedState, privateKey);
-  return {state, signature};
+  return {state, signatures: [signature]};
 }
 
 export function signChallengeMessage(
