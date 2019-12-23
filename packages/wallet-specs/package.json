@@ -1,11 +1,13 @@
 {
-  "name": "wallet-protocols",
+  "name": "@statechannels/wallet-protocols",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "lib/index.js",
   "license": "MIT",
   "scripts": {
+    "prepare": "yarn build",
     "generateConfigs": "yarn run ts-node bin/generateConfigs.ts && npx prettier --write src/protocols/*/protocol.config.js",
-    "test": "jest"
+    "test": "jest",
+    "build": "npx tsc"
   },
   "dependencies": {
     "xstate": "^4.7"
