@@ -40,7 +40,7 @@ export function createRespondTransaction(
   return forceMoveTrans.createRespondTransaction({
     challengeState,
     responseState: response.state,
-    responseSignature: response.signature,
+    responseSignature: response.signatures[0],
   });
 }
 
@@ -78,7 +78,7 @@ function createSignatureArguments(
 
   // Get a list of all unique states.
   const states = signedStates.filter((s, i, a) => a.indexOf(s) === i).map(s => s.state);
-  const signatures = signedStates.map(s => s.signature);
+  const signatures = signedStates.map(s => s.signatures).reduce((s1, s2) => s1.concat(s2));
   // Generate whoSignedWhat based on the original list of states (which may contain the same state signed by multiple participants)
   const whoSignedWhat = signedStates.map(s => participants.indexOf(getStateSignerAddress(s)));
 

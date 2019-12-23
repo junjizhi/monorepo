@@ -49,7 +49,7 @@ export {Signatures, Transactions};
 // TODO: Move these to their own interface files once they've stabilized
 export interface SignedState {
   state: State;
-  signature: Signature;
+  signatures: Signature[];
 }
 // TODO: Find a use case for this or remove.
 // @nsario I don't think we need this here -- it should be in the adjudicator state of the wallet

@@ -65,7 +65,7 @@ export function getChallengeRegisteredEvent(eventResult): ChallengeRegisteredEve
       appDefinition,
       isFinal,
     };
-    return {state, signature};
+    return {state, signatures: sigs};
   });
   return {challengeStates, finalizesAt, challengerAddress: challenger};
 }
