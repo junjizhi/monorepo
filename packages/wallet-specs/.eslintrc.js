@@ -15,6 +15,7 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/no-empty-function": "off",
     "no-debugger": "off",
     "no-useless-catch": "off",
     "no-empty-pattern": "off"
