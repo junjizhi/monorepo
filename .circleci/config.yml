@@ -245,10 +245,6 @@ workflows:
           requires:
             - prepare
 
-      - integration-test:
-          requires:
-            - prepare
-
       - integration-test-with-hub:
           requires:
             - prepare
