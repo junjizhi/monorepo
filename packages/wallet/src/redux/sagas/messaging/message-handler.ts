@@ -34,25 +34,29 @@ import {bigNumberify} from "ethers/utils";
 import {Web3Provider} from "ethers/providers";
 
 export function* messageHandler(jsonRpcMessage: object, _domain: string) {
-  const parsedMessage = jrs.parseObject(jsonRpcMessage);
-  switch (parsedMessage.type) {
-    case "notification":
-    case "success":
-      console.warn(`Received unexpected JSON-RPC message ${JSON.stringify(jsonRpcMessage)}`);
-      break;
-    case "error":
-      throw new Error("TODO: Respond with error message");
-    case "request":
-      const validationResult = yield validateRequest(jsonRpcMessage);
-      if (!validationResult.isValid) {
-        console.error(validationResult.errors);
-        yield fork(
-          messageSender,
-          outgoingMessageActions.validationError({id: parsedMessage.payload.id})
-        );
-      }
-      yield handleMessage(parsedMessage.payload as RequestObject);
-      break;
+  try {
+    const parsedMessage = jrs.parseObject(jsonRpcMessage);
+    switch (parsedMessage.type) {
+      case "notification":
+      case "success":
+        console.warn(`Received unexpected JSON-RPC message ${JSON.stringify(jsonRpcMessage)}`);
+        break;
+      case "error":
+        throw new Error("TODO: Respond with error message");
+      case "request":
+        const validationResult = yield validateRequest(jsonRpcMessage);
+        if (!validationResult.isValid) {
+          console.error(validationResult.errors);
+          yield fork(
+            messageSender,
+            outgoingMessageActions.validationError({id: parsedMessage.payload.id})
+          );
+        }
+        yield handleMessage(parsedMessage.payload as RequestObject);
+        break;
+    }
+  } catch (error) {
+    console.error(error);
   }
 }
 
