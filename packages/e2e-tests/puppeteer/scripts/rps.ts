@@ -27,7 +27,10 @@ export async function clickThroughRPSUI(rpsTabA: Page, rpsTabB: Page): Promise<v
   await (await walletIFrameB.waitForXPath('//button[contains(., "Fund Channel")]')).click();
 
   await (await walletIFrameA.waitForXPath('//button[contains(., "Fund Channel")]')).click();
-
+  await new Promise(resolve => setTimeout(resolve, 30000));
+  // eslint-disable-next-line no-undef
+  const bodyHTML = await walletIFrameB.evaluate(() => document.body.innerHTML);
+  console.log(bodyHTML);
   await (await walletIFrameB.waitForXPath('//button[contains(., "Ok!")]')).click();
 
   await (await walletIFrameA.waitForXPath('//button[contains(., "Ok!")]')).click();
