@@ -30,7 +30,7 @@ export class GanacheServer {
     const oneMillion = ethers.utils.parseEther('1000000');
 
     const opts = [
-      [`--networkId ${this.chainId}`, `--port ${this.port}`],
+      [` --verbose --networkId ${this.chainId}`, `--port ${this.port}`],
       accounts.map(a => `--account ${a.privateKey},${a.amount || oneMillion}`),
       [`--gasLimit ${gasLimit}`, `--gasPrice ${gasPrice}`]
     ]
@@ -40,6 +40,7 @@ export class GanacheServer {
     const cmd = `ganache-cli ${opts}`;
 
     this.server = spawn('npx', ['-c', cmd], {stdio: 'pipe'});
+    this.server.stdout.on('data', data => console.log(data.toString()));
     this.server.stderr.on('data', (data: unknown) => {
       log.error(`Server threw error ${data}`);
       throw new Error('Ganache server failed to start');
