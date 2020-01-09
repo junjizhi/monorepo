@@ -13,17 +13,10 @@ const ensureX = (taskComplete: string, { onSuccess }: { onSuccess: string }) => 
 });
 
 const awaitX = (checkX: string, { onSuccess }: { onSuccess: string }) => ({
-  initial: 'wait',
-  states: {
-    wait: {
-      on: {
-        '': [{ target: 'success', cond: checkX }],
-        '*': [{ target: 'success', cond: checkX }],
-      },
-    },
-    success: { type: 'final' },
+  on: {
+    '': [{ target: onSuccess, cond: checkX }],
+    '*': [{ target: onSuccess, cond: checkX }],
   },
-  onDone: onSuccess,
 });
 
 const createAndFundLedger = {
