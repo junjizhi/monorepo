@@ -1,3 +1,5 @@
+// what does the messaging service look like?
+
 const ensureX = (taskComplete: string, { onSuccess }: { onSuccess: string }) => ({
   initial: 'perform',
   states: {
@@ -18,6 +20,11 @@ const awaitX = (checkX: string, { onSuccess }: { onSuccess: string }) => ({
     '*': [{ target: onSuccess, cond: checkX }],
   },
 });
+
+// how do we trigger events?
+// funding increased
+// funding decreased (i.e. revert)
+// state received
 
 const createAndFundLedger = {
   context: {
