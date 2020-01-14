@@ -16,7 +16,7 @@
     "forceConsistentCasingInFileNames": true,
 
     /* As a default, we like to build modules for bleeding-edge compatible outputs */
-    "module": "esnext",
+    "module": "commonjs",
 
     /* Node module resolution is the more recent version */
     "moduleResolution": "node",

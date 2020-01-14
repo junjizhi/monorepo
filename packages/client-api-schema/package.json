@@ -38,7 +38,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.1.1",
     "json-schema-to-typescript": "^8.0.0",
-    "lint-staged": "9.4.0"
+    "lint-staged": "9.4.1"
   },
   "lint-staged": {
     "index.ts": "yarn lint:check --max-warnings=0"

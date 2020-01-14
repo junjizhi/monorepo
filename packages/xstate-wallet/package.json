@@ -21,7 +21,7 @@
     "@statechannels/devtools": "0.1.21",
     "@types/webpack": "4.41.0",
     "source-map-loader": "0.2.4",
-    "typescript": "3.7.4",
+    "typescript": "3.7.2",
     "webpack": "4.41.3"
   },
   "scripts": {
