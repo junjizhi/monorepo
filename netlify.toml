@@ -1,3 +1,4 @@
+[context.production]
+ ignore = "bash ./netlify-ignore.sh"
 [context.deploy-preview]
  ignore = "bash ./netlify-ignore.sh"
- 
