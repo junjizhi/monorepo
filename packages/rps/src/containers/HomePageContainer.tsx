@@ -9,7 +9,7 @@ const mapStateToProps = (siteState: SiteState) => ({
 });
 
 const mapDispatchToProps = {
-  login: loginActions.loginRequest,
+  login: loginActions.loginSuccess,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

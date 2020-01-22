@@ -74,7 +74,8 @@ export default function* openGameSaga() {
             .onDisconnect();
           yield apply(disconnect, disconnect.remove, []);
           // use update to allow us to pick our own key
-          yield call(reduxSagaFirebase.database.update, myOpenGameKey, myOpenGame);
+          // yield call(reduxSagaFirebase.database.update, myOpenGameKey, myOpenGame);
+          // console.log(myOpenGame);
           myGameIsOnFirebase = true;
         } else {
           const storeObj = yield select();

@@ -6,14 +6,15 @@ import {logger} from '../logger';
 
 const log = logger();
 
-const config = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: `${process.env.FIREBASE_PROJECT}.firebaseapp.com`,
-  databaseURL: `https://${process.env.FIREBASE_PROJECT}.firebaseio.com`,
-  projectId: process.env.FIREBASE_PROJECT,
-  storageBucket: '',
-  messagingSenderId: '913007764573'
-};
+const config = process.env.FIREBASE_URL
+  ? {databaseURL: process.env.FIREBASE_URL}
+  : {
+      apiKey: process.env.FIREBASE_API_KEY,
+      databaseURL: `https://${process.env.FIREBASE_PROJECT}.firebaseio.com`,
+      projectId: process.env.FIREBASE_PROJECT,
+      storageBucket: '',
+      messagingSenderId: '913007764573'
+    };
 
 let firebaseApp: firebase.app.App;
 function getFirebaseApp() {
