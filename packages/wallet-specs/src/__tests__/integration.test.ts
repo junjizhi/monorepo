@@ -17,9 +17,10 @@ import { log } from '../utils';
 import { Chain } from '../chain';
 
 import { processStates } from './utils';
-import { first, second, wallet1, wallet2, participants } from './data';
+import { first, second, wallet1, wallet2, participants, storeWithFundedChannel } from './data';
 
-jest.setTimeout(10000);
+const EXPECTATION_TIMEOUT = 10000;
+jest.setTimeout(60000);
 
 const logProcessStates = state => {
   log(processStates(state));
@@ -43,11 +44,13 @@ const chain = new Chain();
 
 const stores: Record<string, IStore> = {};
 
-const connect = (wallet: ethers.Wallet) => {
-  const store = new Store({
-    privateKeys: { [wallet.address]: wallet.privateKey },
-    chain,
-  });
+const connect = (wallet: ethers.Wallet, store?) => {
+  store =
+    store ||
+    new Store({
+      privateKeys: { [wallet.address]: wallet.privateKey },
+      chain,
+    });
   const participantId =
     wallet.address === first.signingAddress ? first.participantId : second.participantId;
 
@@ -73,7 +76,13 @@ const connect = (wallet: ethers.Wallet) => {
   return [service, store] as [typeof service, typeof store];
 };
 
-test('opening and closing a channel', async () => {
+const channelId = getChannelId({
+  participants: participants.map(p => p.signingAddress),
+  channelNonce: '0x01',
+  chainId,
+});
+
+test('opening a channel', async () => {
   const [left] = connect(wallet1);
   const [right] = connect(wallet2);
 
@@ -85,13 +94,7 @@ test('opening and closing a channel', async () => {
 
     expect(createChannelProcess && createChannelProcess.ref.state.value).toEqual('success');
     expect(joinChannelProcess && joinChannelProcess.ref.state.value).toEqual('success');
-  }, 200);
-
-  const channelId = getChannelId({
-    participants: participants.map(p => p.signingAddress),
-    channelNonce: '0x01',
-    chainId,
-  });
+  }, EXPECTATION_TIMEOUT);
 
   {
     const { latestSupportedState } = stores[first.participantId].getEntry(channelId);
@@ -101,6 +104,27 @@ test('opening and closing a channel', async () => {
     const { latestSupportedState } = stores[second.participantId].getEntry(channelId);
     expect(latestSupportedState.turnNum).toEqual(3);
   }
+
+  expect(stores.first).toMatchObject(storeWithFundedChannel(wallet1.privateKey));
+  expect(stores.second).toMatchObject(storeWithFundedChannel(wallet2.privateKey));
+});
+
+test('concluding a channel', async () => {
+  const data1 = storeWithFundedChannel(wallet1.privateKey);
+  const firstStore = new Store({
+    nonces: data1._nonces,
+    privateKeys: data1._privateKeys,
+    store: data1._store,
+  });
+
+  const data2 = storeWithFundedChannel(wallet2.privateKey);
+  const secondStore = new Store({
+    nonces: data2._nonces,
+    privateKeys: data2._privateKeys,
+    store: data2._store,
+  });
+  const [left] = connect(wallet1, firstStore);
+  const [right] = connect(wallet2, secondStore);
 
   const concludeChannel: ConcludeChannelEvent = {
     type: 'CONCLUDE_CHANNEL',
@@ -115,5 +139,5 @@ test('opening and closing a channel', async () => {
     const concludeChannelProcess = left.state.context.processes.find(p => /conclude/.test(p.id));
 
     expect(concludeChannelProcess && concludeChannelProcess.ref.state.value).toEqual('success');
-  }, 200);
+  }, EXPECTATION_TIMEOUT);
 });
