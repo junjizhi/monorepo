@@ -118,6 +118,10 @@ export class EphemeralStore implements Store {
       case 'DEPOSITED':
       case 'REVERT':
         return this._chain.on(eventType, listener);
+      case 'CHALLENGE_CLEARED':
+      case 'CHALLENGE_REGISTERED':
+        // TODO
+        return {} as any;
       default:
         return unreachable(eventType);
     }
