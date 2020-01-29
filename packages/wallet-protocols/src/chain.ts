@@ -11,6 +11,7 @@ export interface IChain {
   deposit: (channelId: string, expectedHeld: string, amount: string) => Promise<void>;
   on: (chainEventType: ChainEventType, listener: ChainEventListener) => () => void;
   forceMove(support: SignedState[], challengerSig: Signature);
+  checkpoint(support: SignedState[]);
 }
 
 export class Chain implements IChain {
@@ -67,6 +68,13 @@ export class Chain implements IChain {
       challengeState: state,
     });
   }
+
+  public checkpoint(support: SignedState[]) {
+    this.triggerEvent({
+      type: 'CHALLENGE_CLEARED',
+      newTurnNumRecord: Math.max(...support.map(s => s.state.turnNum)),
+    });
+  }
 }
 
 // The store would send this action whenever the channel is updated
@@ -86,4 +94,9 @@ export interface ChallengeRegistered {
   challengeState: State;
 }
 
-export type ChainEvent = Deposited | Revert | ChallengeRegistered;
+export interface ChallengeCleared {
+  type: 'CHALLENGE_CLEARED';
+  newTurnNumRecord: number;
+}
+
+export type ChainEvent = Deposited | Revert | ChallengeRegistered | ChallengeCleared;
