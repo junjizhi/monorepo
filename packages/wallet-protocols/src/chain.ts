@@ -1,4 +1,8 @@
+import { Signature } from 'ethers/utils';
+import { State } from '@statechannels/nitro-protocol';
+
 import { add } from './mathOps';
+import { SignedState } from './types';
 export type ChainEventListener = (event: ChainEvent) => void;
 export type ChainEventType = ChainEvent['type'];
 export interface IChain {
@@ -6,6 +10,7 @@ export interface IChain {
   getHoldings: (channelId: string) => Promise<string>;
   deposit: (channelId: string, expectedHeld: string, amount: string) => Promise<void>;
   on: (chainEventType: ChainEventType, listener: ChainEventListener) => () => void;
+  forceMove(support: SignedState[], challengerSig: Signature);
 }
 
 export class Chain implements IChain {
@@ -54,6 +59,14 @@ export class Chain implements IChain {
   public setHoldings(channelId, amount) {
     this._holdings[channelId] = amount;
   }
+
+  public forceMove(support: SignedState[], _challengerSig: Signature) {
+    const { state } = support[0];
+    this.triggerEvent({
+      type: 'CHALLENGE_REGISTERED',
+      challengeState: state,
+    });
+  }
 }
 
 // The store would send this action whenever the channel is updated
@@ -68,4 +81,9 @@ export interface Revert {
   type: 'REVERT';
 }
 
-export type ChainEvent = Deposited | Revert;
+export interface ChallengeRegistered {
+  type: 'CHALLENGE_REGISTERED';
+  challengeState: State;
+}
+
+export type ChainEvent = Deposited | Revert | ChallengeRegistered;
