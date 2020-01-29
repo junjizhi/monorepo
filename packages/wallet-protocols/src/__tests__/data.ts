@@ -23,7 +23,7 @@ export const second: Participant = {
 };
 export const participants = [first, second];
 
-const appState: State = {
+export const appState: State = {
   appData: '0x0000000000000000000000000000000000000000000000000000000000000000',
   appDefinition: '0x0000000000000000000000000000000000000000',
   isFinal: false,
@@ -82,11 +82,11 @@ const ledgerState: State = {
 };
 
 export const storeWithFundedChannel = privateKey => ({
-  _nonces: {
+  nonces: {
     '["0x11115FAf6f1BF263e81956F0Cc68aEc8426607cf","0x2222E21c8019b14dA16235319D34b5Dd83E644A9"]':
       '0x02',
   },
-  _store: {
+  store: {
     '0xb9500857552943ae5ef6c2a046e311560c296c474aa47a3d13614d1ac98bd1a6': {
       states: [
         {
@@ -140,11 +140,11 @@ export const storeWithFundedChannel = privateKey => ({
       channel: ledgerState.channel,
     },
   },
-  _privateKeys: {
+  privateKeys: {
     [new ethers.Wallet(privateKey).address]: privateKey,
   },
-  _chain: {
-    _holdings: {
+  chain: {
+    holdings: {
       '0x3dc8e97155e1d74f9ba973780ced196d0d0974a2c387e20db58871b39641a136': '0x04',
     },
   },

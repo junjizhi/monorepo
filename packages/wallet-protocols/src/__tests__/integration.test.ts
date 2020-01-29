@@ -111,18 +111,10 @@ test('opening a channel', async () => {
 
 test('concluding a channel', async () => {
   const data1 = storeWithFundedChannel(wallet1.privateKey);
-  const firstStore = new EphemeralStore({
-    nonces: data1._nonces,
-    privateKeys: data1._privateKeys,
-    store: data1._store,
-  });
+  const firstStore = new EphemeralStore({ ...data1, chain: new Chain(data1.chain) });
 
   const data2 = storeWithFundedChannel(wallet2.privateKey);
-  const secondStore = new EphemeralStore({
-    nonces: data2._nonces,
-    privateKeys: data2._privateKeys,
-    store: data2._store,
-  });
+  const secondStore = new EphemeralStore({ ...data2, chain: new Chain(data2.chain) });
   const [left] = connect(wallet1, firstStore);
   const [right] = connect(wallet2, secondStore);
 
