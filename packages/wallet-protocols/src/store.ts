@@ -9,7 +9,7 @@ import { map, filter } from 'rxjs/operators';
 import { ChannelStoreEntry, IChannelStoreEntry, Funding, supported } from './ChannelStoreEntry';
 import { messageService, IMessageService } from './messaging';
 import { AddressableMessage, FundingStrategyProposed } from './wire-protocol';
-import { Chain, IChain, ChainEventType, ChainEvent } from './chain';
+import { Chain, IChain, ChainEventType, ChainEvent, ChallengeRegistered, Deposited } from './chain';
 import { add, gt } from './mathOps';
 
 import { getChannelId, SignedState, unreachable, statesEqual } from '.';
@@ -326,6 +326,28 @@ export function observeChannel(store: Store, channelId: string): rxjs.Observable
   );
 
   return rxjs.merge(currentState, updates);
+}
+
+export function observeChallenges(store: Store): rxjs.Observable<ChallengeRegistered> {
+  return new rxjs.Observable<ChallengeRegistered>(observer => {
+    store.on('CHALLENGE_REGISTERED', val => {
+      // store.on does not correctly infer the type of `val`
+      val.type === 'CHALLENGE_REGISTERED' && observer.next(val);
+    });
+  });
+}
+
+export function observeDeposits(store: Store): rxjs.Observable<Deposited> {
+  return new rxjs.Observable<Deposited>(observer => {
+    store.on('DEPOSITED', val => {
+      // store.on does not correctly infer the type of `val`
+      val.type === 'DEPOSITED' && observer.next(val);
+    });
+  });
+}
+
+export function observeChain(store: Store): rxjs.Observable<ChainEvent> {
+  return rxjs.merge(observeChallenges(store), observeDeposits(store));
 }
 
 export function merge(left: SignedState[], right: SignedState[]): SignedState[] {
