@@ -93,9 +93,9 @@ export interface ChallengeCleared {
   type: 'CHALLENGE_CLEARED';
   newTurnNumRecord: number;
 }
-
-export type ChainEvent = Deposited | Revert | ChallengeRegistered | ChallengeCleared;
 export interface ChallengeRegistered {
   type: 'CHALLENGE_REGISTERED';
   challengeState: State;
 }
+
+export type ChainEvent = Deposited | Revert | ChallengeRegistered | ChallengeCleared;
